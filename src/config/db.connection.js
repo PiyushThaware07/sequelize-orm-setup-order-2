@@ -6,7 +6,8 @@ const connectDatabase = async () => {
     try {
         console.log("--> Connecting to database...");
         await sequelize.authenticate();
-        console.log("--> Database connected successfully.");
+        const environment = process.env.NODE_ENV === "production" ? "Production 🚀" : "Development ⚙️";
+        console.log(`--> Database connected successfully : ${environment}`);
 
         // Create a promise for the yesno prompt
         const syncPrompt = yesno({
@@ -33,7 +34,6 @@ const connectDatabase = async () => {
         const shouldSync = await timeoutPromise;
 
         if (shouldSync) {
-            console.log("--> Syncing models...");
             await initModels();
             console.log("--> Models synced successfully.");
         } else {
